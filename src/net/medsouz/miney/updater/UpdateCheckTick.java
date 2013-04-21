@@ -15,6 +15,7 @@ public class UpdateCheckTick implements ITickHandler{
 			if(!MineyUpdater.updater.isUpdating){
 				if(!MineyUpdater.updater.failed){
 					MineyUpdater.updater = null;
+					VersionManager.setLocalMineyVersion();
 					MineyUpdater.loadClient();
 				}else{
 					MineyUpdater.updateFailed = true;
