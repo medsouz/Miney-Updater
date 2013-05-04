@@ -17,10 +17,14 @@ public class RenderTick implements ITickHandler{
 	@Override
 	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
 		if(MineyUpdater.updater != null){
-			Minecraft.getMinecraft().currentScreen.drawString(Minecraft.getMinecraft().fontRenderer, "Miney is updating!", 2, 2, 16777215);
+			if(Minecraft.getMinecraft().currentScreen != null){
+				Minecraft.getMinecraft().currentScreen.drawString(Minecraft.getMinecraft().fontRenderer, "Miney is updating!", 2, 2, 16777215);
+			}
 		}
 		if(MineyUpdater.updateFailed){
-			Minecraft.getMinecraft().currentScreen.drawString(Minecraft.getMinecraft().fontRenderer, "Miney failed to update, please try again later!", 2, 2, 16777215);
+			if(Minecraft.getMinecraft().currentScreen != null){
+				Minecraft.getMinecraft().currentScreen.drawString(Minecraft.getMinecraft().fontRenderer, "Miney failed to update, please restart Minecraft to try again!", 2, 2, 16777215);
+			}
 		}
 	}
 
