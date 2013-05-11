@@ -6,11 +6,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import net.medsouz.miney.MineyClientInterface;
 import net.minecraft.client.Minecraft;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.ModClassLoader;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -22,8 +23,6 @@ public class MineyUpdater {
 
 	public static UpdaterThread updater;
 	public static boolean updateFailed = false;
-
-	public static MineyClientInterface client;
 
 	@Init
 	public void init(FMLInitializationEvent evt) {
@@ -52,9 +51,11 @@ public class MineyUpdater {
 
 	public static void loadClient() {
 		try {
-			URLClassLoader loader = new URLClassLoader(new URL[] {new File(Minecraft.getMinecraftDir(), "Miney/client.zip").toURI().toURL()}, MineyUpdater.class.getClassLoader());
-			Class clazz = Class.forName("net.medsouz.miney.client.MineyClient", true, loader);
-			client = (MineyClientInterface) clazz.newInstance();
+			ModClassLoader fmlLoader = (ModClassLoader)Loader.instance().getModClassLoader();
+			fmlLoader.addFile(new File(Minecraft.getMinecraftDir(), "Miney/client.zip"));
+			//URLClassLoader loader = new URLClassLoader(new URL[] {new File(Minecraft.getMinecraftDir(), "Miney/client.zip").toURI().toURL(), new File(Minecraft.getMinecraftDir(), "bin/minecraft.jar").toURI().toURL()}, Loader.instance().getModClassLoader());
+			Class clazz = Class.forName("net.medsouz.miney.client.MineyClient", true, fmlLoader);
+			Object client = clazz.newInstance();
 			Method method = clazz.getDeclaredMethod("init");
 			method.invoke(client);
 		} catch (Exception e) {
