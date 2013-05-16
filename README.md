@@ -1,4 +1,4 @@
 Miney-Updater
 =============
 
-Experimental updater for the Miney mod.
+The launcher for the Miney Minecraft mod. For more information visit the [Miney-Client](https://github.com/medsouz/Miney-Client) page.
